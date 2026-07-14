@@ -1,144 +1,764 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Quantum Origami Data & Graphs</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <title>Quantum Origami & Standard Model</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --bg: #05060a;
+      --bg-alt: #0b0d14;
+      --accent: #3bc9db;
+      --accent-soft: rgba(59, 201, 219, 0.15);
+      --accent-strong: #ff6b6b;
+      --text: #f8f9fa;
+      --muted: #adb5bd;
+      --border: #343a40;
+      --card: #11141c;
+      --code-bg: #1a1d24;
+      --table-header: #212529;
+    }
 
-<style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #0d1117;
-  color: #e6edf3;
-}
-header {
-  background: #161b22;
-  padding: 20px;
-  text-align: center;
-  border-bottom: 1px solid #30363d;
-}
-main {
-  max-width: 1000px;
-  margin: auto;
-  padding: 20px;
-}
-.panel {
-  background: #161b22;
-  padding: 20px;
-  border-radius: 10px;
-  margin-bottom: 30px;
-  border: 1px solid #30363d;
-}
-h1, h2 {
-  color: #58a6ff;
-  margin-top: 0;
-}
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 10px;
-}
-th, td {
-  padding: 10px;
-  border-bottom: 1px solid #30363d;
-}
-th {
-  background: #21262d;
-  color: #58a6ff;
-}
-tr:nth-child(even) {
-  background: #161b22;
-}
-svg {
-  width: 100%;
-  height: 300px;
-  margin-top: 20px;
-}
-</style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #1f2933 0, #05060a 55%);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    header {
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(90deg, #05060a, #0b0d14);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .nav {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-title {
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1rem;
+      font-size: 0.9rem;
+    }
+
+    .nav-links a {
+      padding: 0.25rem 0.5rem;
+      border-radius: 999px;
+      border: 1px solid transparent;
+    }
+
+    .nav-links a:hover {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1.5rem;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+      gap: 2rem;
+      align-items: center;
+      padding: 2rem 1.5rem;
+      margin-bottom: 2rem;
+      border-radius: 1.25rem;
+      background: radial-gradient(circle at top left, #1f2933 0, #05060a 55%);
+      border: 1px solid var(--border);
+    }
+
+    .hero-title {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+
+    .hero-subtitle {
+      font-size: 1rem;
+      color: var(--muted);
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid var(--accent);
+      background: var(--accent-soft);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 0.75rem;
+    }
+
+    .btn {
+      padding: 0.5rem 1rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--bg-alt);
+      color: var(--text);
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+    }
+
+    .btn-primary {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      border-color: var(--accent);
+    }
+
+    .hero-graphic {
+      border-radius: 1rem;
+      background: radial-gradient(circle at center, #1f2933 0, #05060a 60%);
+      border: 1px solid var(--border);
+      padding: 1rem;
+    }
+
+    .hero-graphic svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .section {
+      margin-bottom: 2rem;
+      padding: 1.5rem;
+      border-radius: 1rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+    }
+
+    .section-tag {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+
+    .section p {
+      margin-bottom: 0.75rem;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .equation-block {
+      margin-top: 0.75rem;
+      padding: 0.75rem 1rem;
+      border-radius: 0.75rem;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      font-family: "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 0.9rem;
+      overflow-x: auto;
+    }
+
+    .equation-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 0.25rem;
+    }
+
+    .equation-main {
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .equation-comment {
+      color: var(--muted);
+      margin-top: 0.4rem;
+      font-size: 0.85rem;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.25rem;
+      margin-top: 0.75rem;
+    }
+
+    .card {
+      padding: 1rem;
+      border-radius: 0.75rem;
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+    }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+
+    .card p {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 0.75rem;
+      font-size: 0.9rem;
+    }
+
+    thead {
+      background: var(--table-header);
+    }
+
+    th, td {
+      padding: 0.5rem 0.6rem;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+    }
+
+    th {
+      font-weight: 500;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-size: 0.8rem;
+    }
+
+    tbody tr:hover {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .table-caption {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 0.4rem;
+    }
+
+    .graph-container {
+      margin-top: 0.75rem;
+      border-radius: 0.75rem;
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      padding: 0.75rem;
+    }
+
+    .graph-title {
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-bottom: 0.4rem;
+    }
+
+    .graph-caption {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 0.4rem;
+    }
+
+    footer {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1.5rem;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.8rem;
+      text-align: center;
+    }
+
+    @media (max-width: 768px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
-
 <body>
+  <header>
+    <div class="nav">
+      <div class="nav-title">Quantum Origami · Standard Model</div>
+      <nav class="nav-links">
+        <a href="#equation">Main Equation</a>
+        <a href="#particles">Particles</a>
+        <a href="#interactions">Interactions</a>
+        <a href="#graphs">Graphs</a>
+      </nav>
+    </div>
+  </header>
 
-<header>
-  <h1>Quantum Origami — Tables & Graphs</h1>
-</header>
+  <main>
+    <!-- HERO -->
+    <section class="hero">
+      <div>
+        <div class="hero-badge">
+          <span>Standard Model</span>
+          <span>×</span>
+          <span>Geometric Folding</span>
+        </div>
+        <h1 class="hero-title">A structured view of the Standard Model</h1>
+        <p class="hero-subtitle">
+          Clean tables, simple graphs, and a single main structure equation—ready to host on GitHub Pages.
+        </p>
+        <p class="hero-subtitle">
+          Think of this as a “quantum origami” lens: fields and symmetries folded into a single geometric framework.
+        </p>
+        <div class="hero-actions">
+          <button class="btn btn-primary" onclick="document.getElementById('equation').scrollIntoView({behavior:'smooth'})">
+            View main structure equation
+          </button>
+          <button class="btn" onclick="document.getElementById('particles').scrollIntoView({behavior:'smooth'})">
+            Jump to particle tables
+          </button>
+        </div>
+      </div>
+      <div class="hero-graphic">
+        <!-- Simple SVG "graph" of gauge groups and sectors -->
+        <svg viewBox="0 0 320 220">
+          <defs>
+            <linearGradient id="nodeGrad" x1="0" x2="1" y1="0" y2="1">
+              <stop offset="0%" stop-color="#3bc9db" />
+              <stop offset="100%" stop-color="#ff6b6b" />
+            </linearGradient>
+          </defs>
 
-<main>
+          <!-- Background -->
+          <rect x="0" y="0" width="320" height="220" fill="none" />
 
-<!-- PARTICLE TABLE -->
-<div class="panel">
-  <h2>Particle Motif Table</h2>
-  <table>
-    <tr><th>Particle</th><th>Motif Type</th><th>Angle Pattern</th><th>Description</th></tr>
-    <tr><td>Electron</td><td>1-fold</td><td>(θ < 0)</td><td>Negative curvature</td></tr>
-    <tr><td>Positron</td><td>1-fold</td><td>(θ > 0)</td><td>Positive curvature</td></tr>
-    <tr><td>Neutrino</td><td>Flat</td><td>(|θ| < 1)</td><td>Minimal curvature</td></tr>
-    <tr><td>Up Quark</td><td>3-fold</td><td>(θ₁, θ₂, θ₃)</td><td>Fractional charge +2/3</td></tr>
-    <tr><td>Down Quark</td><td>3-fold</td><td>(θ₁, θ₂, θ₃)</td><td>Fractional charge -1/3</td></tr>
-    <tr><td>Photon</td><td>Oscillatory</td><td>sin(ωt)</td><td>Radiation mode</td></tr>
-  </table>
-</div>
+          <!-- Gauge group nodes -->
+          <circle cx="60" cy="60" r="22" fill="url(#nodeGrad)" opacity="0.9" />
+          <circle cx="160" cy="40" r="22" fill="url(#nodeGrad)" opacity="0.9" />
+          <circle cx="260" cy="60" r="22" fill="url(#nodeGrad)" opacity="0.9" />
 
-<!-- CREASE DENSITY GRAPH -->
-<div class="panel">
-  <h2>Crease Density vs Curvature</h2>
-  <svg>
-    <polyline points="50,250 150,200 250,150 350,100 450,60"
-              stroke="#58a6ff" stroke-width="4" fill="none"></polyline>
-    <circle cx="50" cy="250" r="6" fill="#58a6ff"></circle>
-    <circle cx="150" cy="200" r="6" fill="#58a6ff"></circle>
-    <circle cx="250" cy="150" r="6" fill="#58a6ff"></circle>
-    <circle cx="350" cy="100" r="6" fill="#58a6ff"></circle>
-    <circle cx="450" cy="60" r="6" fill="#58a6ff"></circle>
-  </svg>
-  <p>Higher crease density corresponds to higher curvature in the Quantum Origami model.</p>
-</div>
+          <!-- Labels -->
+          <text x="60" y="64" text-anchor="middle" fill="#05060a" font-size="11" font-weight="600">SU(3)</text>
+          <text x="160" y="44" text-anchor="middle" fill="#05060a" font-size="11" font-weight="600">SU(2)</text>
+          <text x="260" y="64" text-anchor="middle" fill="#05060a" font-size="11" font-weight="600">U(1)</text>
 
-<!-- ANGLE DECAY GRAPH -->
-<div class="panel">
-  <h2>Inflation: Fold Angle Decay</h2>
-  <svg>
-    <polyline points="50,250 150,180 250,120 350,80 450,50"
-              stroke="#2ea043" stroke-width="4" fill="none"></polyline>
-    <circle cx="50" cy="250" r="6" fill="#2ea043"></circle>
-    <circle cx="150" cy="180" r="6" fill="#2ea043"></circle>
-    <circle cx="250" cy="120" r="6" fill="#2ea043"></circle>
-    <circle cx="350" cy="80" r="6" fill="#2ea043"></circle>
-    <circle cx="450" cy="50" r="6" fill="#2ea043"></circle>
-  </svg>
-  <p>Fold angles exponentially relax during inflation, smoothing the geometry.</p>
-</div>
+          <!-- Connections -->
+          <line x1="82" y1="60" x2="138" y2="40" stroke="#3bc9db" stroke-width="1.5" stroke-dasharray="3 3" />
+          <line x1="182" y1="40" x2="238" y2="60" stroke="#3bc9db" stroke-width="1.5" stroke-dasharray="3 3" />
 
-<!-- ENERGY VS ANGLE TABLE -->
-<div class="panel">
-  <h2>Energy vs Fold Angle</h2>
-  <table>
-    <tr><th>Angle |θ|</th><th>Energy E = k|θ|</th></tr>
-    <tr><td>0.5</td><td>0.5k</td></tr>
-    <tr><td>1.0</td><td>1.0k</td></tr>
-    <tr><td>1.5</td><td>1.5k</td></tr>
-    <tr><td>2.0</td><td>2.0k</td></tr>
-    <tr><td>2.5</td><td>2.5k</td></tr>
-  </table>
-</div>
+          <!-- Matter sector -->
+          <rect x="40" y="110" width="240" height="80" rx="12" ry="12" fill="#11141c" stroke="#343a40" />
+          <text x="160" y="130" text-anchor="middle" fill="#f8f9fa" font-size="11" font-weight="600">
+            Fermion fields (quarks & leptons)
+          </text>
+          <text x="160" y="148" text-anchor="middle" fill="#adb5bd" font-size="10">
+            Transform under SU(3)×SU(2)×U(1)
+          </text>
 
-<!-- ENERGY GRAPH -->
-<div class="panel">
-  <h2>Energy vs Angle Graph</h2>
-  <svg>
-    <polyline points="50,250 150,200 250,150 350,100 450,50"
-              stroke="#ff7b72" stroke-width="4" fill="none"></polyline>
-    <circle cx="50" cy="250" r="6" fill="#ff7b72"></circle>
-    <circle cx="150" cy="200" r="6" fill="#ff7b72"></circle>
-    <circle cx="250" cy="150" r="6" fill="#ff7b72"></circle>
-    <circle cx="350" cy="100" r="6" fill="#ff7b72"></circle>
-    <circle cx="450" cy="50" r="6" fill="#ff7b72"></circle>
-  </svg>
-  <p>Energy increases linearly with fold angle magnitude.</p>
-</div>
+          <!-- Small "fold" arrows -->
+          <path d="M80 170 L95 155 L110 170" fill="none" stroke="#3bc9db" stroke-width="1.2" />
+          <path d="M210 170 L225 155 L240 170" fill="none" stroke="#ff6b6b" stroke-width="1.2" />
+          <text x="160" y="190" text-anchor="middle" fill="#adb5bd" font-size="9">
+            Geometric folding of fields into a unified structure
+          </text>
+        </svg>
+      </div>
+    </section>
 
-</main>
+    <!-- MAIN STRUCTURE EQUATION -->
+    <section id="equation" class="section">
+      <div class="section-header">
+        <h2 class="section-title">Main structure equation (Standard Model Lagrangian)</h2>
+        <span class="section-tag">Core structure</span>
+      </div>
+      <p>
+        At the level of the Standard Model, the “main structure equation” is its Lagrangian density
+        \(\mathcal{L}_{\text{SM}}\). In a compact schematic form, we can write:
+      </p>
 
+      <div class="equation-block">
+        <div class="equation-label">Schematic Standard Model Lagrangian</div>
+        <div class="equation-main">
+          
+
+\[
+          \mathcal{L}_{\text{SM}}
+          =
+          -\frac{1}{4} \sum_{a} F_{\mu\nu}^{a} F^{a\,\mu\nu}
+          + \sum_{\text{fermions}} \bar{\psi} \left(i\gamma^{\mu} D_{\mu} - m\right) \psi
+          + (D_{\mu} \Phi)^{\dagger} (D^{\mu} \Phi)
+          - V(\Phi)
+          + \mathcal{L}_{\text{Yukawa}}.
+          \]
+
+
+        </div>
+        <div class="equation-comment">
+          Gauge fields \(F_{\mu\nu}^{a}\) encode the SU(3)\(\times\)SU(2)\(\times\)U(1) interactions,
+          fermion terms describe quarks and leptons, \(\Phi\) is the Higgs field, and
+          \(\mathcal{L}_{\text{Yukawa}}\) couples Higgs to matter to generate masses.
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-top:1rem;">
+        <div class="card">
+          <div class="card-title">Gauge sector</div>
+          <p>
+            The gauge part \(-\frac{1}{4} F_{\mu\nu}^{a} F^{a\,\mu\nu}\) contains the dynamics of the
+            gluons (SU(3)), W and Z bosons (SU(2)), and the hypercharge boson (U(1)). In a “folding”
+            picture, these are the edges of the origami: they define how the sheet (spacetime + fields)
+            can bend without tearing symmetry.
+          </p>
+        </div>
+        <div class="card">
+          <div class="card-title">Matter + Higgs sector</div>
+          <p>
+            Fermion kinetic terms and Yukawa couplings describe how quarks and leptons propagate and
+            acquire mass through the Higgs field. The Higgs potential \(V(\Phi)\) sets the vacuum
+            expectation value, which is like choosing a preferred fold that breaks electroweak symmetry
+            while keeping the underlying gauge structure consistent.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PARTICLE TABLES -->
+    <section id="particles" class="section">
+      <div class="section-header">
+        <h2 class="section-title">Standard Model particle content</h2>
+        <span class="section-tag">Tables</span>
+      </div>
+      <p>
+        The Standard Model organizes particles into fermions (matter) and bosons (force carriers +
+        Higgs). Below are compact tables summarizing the main content. You can extend or edit these
+        directly in this single file.
+      </p>
+
+      <div class="grid-2">
+        <!-- Fermions -->
+        <div class="card">
+          <div class="card-title">Fermions (quarks & leptons)</div>
+          <table>
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Generation</th>
+                <th>Symbol</th>
+                <th>Charge (Q)</th>
+                <th>Color</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Quark</td>
+                <td>1st</td>
+                <td>u, d</td>
+                <td>+2/3, -1/3</td>
+                <td>Yes (SU(3))</td>
+              </tr>
+              <tr>
+                <td>Quark</td>
+                <td>2nd</td>
+                <td>c, s</td>
+                <td>+2/3, -1/3</td>
+                <td>Yes</td>
+              </tr>
+              <tr>
+                <td>Quark</td>
+                <td>3rd</td>
+                <td>t, b</td>
+                <td>+2/3, -1/3</td>
+                <td>Yes</td>
+              </tr>
+              <tr>
+                <td>Lepton</td>
+                <td>1st</td>
+                <td>e, νₑ</td>
+                <td>-1, 0</td>
+                <td>No</td>
+              </tr>
+              <tr>
+                <td>Lepton</td>
+                <td>2nd</td>
+                <td>μ, ν_μ</td>
+                <td>-1, 0</td>
+                <td>No</td>
+              </tr>
+              <tr>
+                <td>Lepton</td>
+                <td>3rd</td>
+                <td>τ, ν_τ</td>
+                <td>-1, 0</td>
+                <td>No</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="table-caption">
+            Fermions are spin-½ fields transforming under SU(3)\(\times\)SU(2)\(\times\)U(1) with
+            different charges and representations.
+          </div>
+        </div>
+
+        <!-- Bosons -->
+        <div class="card">
+          <div class="card-title">Bosons (gauge & Higgs)</div>
+          <table>
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Field</th>
+                <th>Group</th>
+                <th>Role</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Gauge</td>
+                <td>Gluons (g)</td>
+                <td>SU(3)</td>
+                <td>Strong interaction</td>
+              </tr>
+              <tr>
+                <td>Gauge</td>
+                <td>W⁺, W⁻, Z⁰</td>
+                <td>SU(2)</td>
+                <td>Weak interaction</td>
+              </tr>
+              <tr>
+                <td>Gauge</td>
+                <td>Photon (γ)</td>
+                <td>U(1)</td>
+                <td>Electromagnetism</td>
+              </tr>
+              <tr>
+                <td>Scalar</td>
+                <td>Higgs (H)</td>
+                <td>SU(2) doublet</td>
+                <td>Mass generation via symmetry breaking</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="table-caption">
+            Bosons mediate forces or shape the vacuum structure. In a folding analogy, they define
+            how the origami sheet interacts and stabilizes.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- INTERACTIONS & GRAPHS -->
+    <section id="interactions" class="section">
+      <div class="section-header">
+        <h2 class="section-title">Interactions and symmetry structure</h2>
+        <span class="section-tag">Structure</span>
+      </div>
+      <p>
+        The Standard Model is built on the gauge group
+        \(\text{SU(3)}_{\text{color}} \times \text{SU(2)}_{\text{weak}} \times \text{U(1)}_{\text{hypercharge}}\).
+        Each sector contributes terms to the main Lagrangian, and the fields “fold” into representations
+        of this group.
+      </p>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">Gauge group summary</div>
+          <table>
+            <thead>
+              <tr>
+                <th>Group</th>
+                <th>Sector</th>
+                <th>Field</th>
+                <th>Interaction</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>SU(3)</td>
+                <td>Color</td>
+                <td>Gluons</td>
+                <td>Strong force between quarks</td>
+              </tr>
+              <tr>
+                <td>SU(2)</td>
+                <td>Weak isospin</td>
+                <td>W⁺, W⁻, Z⁰</td>
+                <td>Weak interactions, parity violation</td>
+              </tr>
+              <tr>
+                <td>U(1)</td>
+                <td>Hypercharge</td>
+                <td>B (→ γ after mixing)</td>
+                <td>Electromagnetic + weak mixing</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="table-caption">
+            Together, these groups define the gauge part of \(\mathcal{L}_{\text{SM}}\), encoded in
+            the field strengths \(F_{\mu\nu}^{a}\).
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Yukawa & Higgs interactions</div>
+          <p>
+            Yukawa terms couple fermions to the Higgs field:
+          </p>
+          <div class="equation-block" style="margin-top:0.5rem;">
+            <div class="equation-label">Yukawa schematic</div>
+            <div class="equation-main">
+              
+
+\[
+              \mathcal{L}_{\text{Yukawa}}
+              \sim
+              - y_{f}\, \bar{\psi}_{L}\, \Phi\, \psi_{R} + \text{h.c.}
+              \]
+
+
+            </div>
+            <div class="equation-comment">
+              After symmetry breaking, \(\Phi\) gets a vacuum expectation value, turning these couplings
+              into mass terms. In a folding picture, this is the “final crease” that locks the shape
+              of the particle spectrum.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GRAPH SECTION -->
+    <section id="graphs" class="section">
+      <div class="section-header">
+        <h2 class="section-title">Visual graphs of the Standard Model structure</h2>
+        <span class="section-tag">Graphs</span>
+      </div>
+      <p>
+        Below are simple SVG-based graphs that show how sectors and particles connect. These are
+        self-contained—no external libraries—so the file stays clean and GitHub Pages–friendly.
+      </p>
+
+      <div class="grid-2">
+        <!-- Graph 1: Sector connectivity -->
+        <div class="graph-container">
+          <div class="graph-title">Gauge sectors and matter fields</div>
+          <svg viewBox="0 0 320 200">
+            <!-- Nodes -->
+            <circle cx="60" cy="40" r="18" fill="#3bc9db" />
+            <circle cx="160" cy="40" r="18" fill="#3bc9db" />
+            <circle cx="260" cy="40" r="18" fill="#3bc9db" />
+
+            <text x="60" y="44" text-anchor="middle" fill="#05060a" font-size="10" font-weight="600">SU(3)</text>
+            <text x="160" y="44" text-anchor="middle" fill="#05060a" font-size="10" font-weight="600">SU(2)</text>
+            <text x="260" y="44" text-anchor="middle" fill="#05060a" font-size="10" font-weight="600">U(1)</text>
+
+            <!-- Matter block -->
+            <rect x="40" y="90" width="240" height="80" rx="10" ry="10" fill="#11141c" stroke="#343a40" />
+            <text x="160" y="115" text-anchor="middle" fill="#f8f9fa" font-size="11" font-weight="600">
+              Quarks & leptons
+            </text>
+            <text x="160" y="135" text-anchor="middle" fill="#adb5bd" font-size="9">
+              Transform under all three gauge groups
+            </text>
+
+            <!-- Lines -->
+            <line x1="60" y1="58" x2="100" y2="90" stroke="#3bc9db" stroke-width="1.5" />
+            <line x1="160" y1="58" x2="160" y2="90" stroke="#3bc9db" stroke-width="1.5" />
+            <line x1="260" y1="58" x2="220" y2="90" stroke="#3bc9db" stroke-width="1.5" />
+          </svg>
+          <div class="graph-caption">
+            Each matter field carries quantum numbers under SU(3), SU(2), and U(1), “folding” into a
+            consistent representation of the full gauge group.
+          </div>
+        </div>
+
+        <!-- Graph 2: Higgs & symmetry breaking -->
+        <div class="graph-container">
+          <div class="graph-title">Higgs field and symmetry breaking</div>
+          <svg viewBox="0 0 320 200">
+            <!-- Higgs node -->
+            <circle cx="160" cy="60" r="22" fill="#ff6b6b" />
+            <text x="160" y="64" text-anchor="middle" fill="#05060a" font-size="11" font-weight="600">
+              Higgs
+            </text>
+
+            <!-- Vacuum arrow -->
+            <line x1="160" y1="82" x2="160" y2="120" stroke="#ff6b6b" stroke-width="1.5" marker-end="url(#arrowHead)" />
+
+            <!-- Define arrow head -->
+            <defs>
+              <marker id="arrowHead" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                <path d="M0,0 L6,3 L0,6 z" fill="#ff6b6b" />
+              </marker>
+            </defs>
+
+            <!-- Broken symmetry block -->
+            <rect x="80" y="120" width="160" height="60" rx="10" ry="10" fill="#11141c" stroke="#343a40" />
+            <text x="160" y="140" text-anchor="middle" fill="#f8f9fa" font-size="11" font-weight="600">
+              Electroweak symmetry broken
+            </text>
+            <text x="160" y="160" text-anchor="middle" fill="#adb5bd" font-size="9">
+              W, Z acquire mass; photon remains massless
+            </text>
+          </svg>
+          <div class="graph-caption">
+            The Higgs vacuum expectation value selects a particular “fold” of the gauge symmetry,
+            leaving electromagnetism unbroken while giving mass to W and Z bosons and fermions.
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    Single-file Standard Model overview · Ready for GitHub Pages · Edit directly in <code>index.html</code>.
+  </footer>
 </body>
 </html>
