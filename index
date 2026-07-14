@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quantum Origami</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+
+<nav>
+    <div class="logo">Quantum Origami</div>
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="paper.html">Full Paper</a></li>
+        <li><a href="simple.html">Simple Explanation</a></li>
+        <li><a href="diagrams.html">Diagrams</a></li>
+        <li><a href="downloads.html">Downloads</a></li>
+    </ul>
+    <button id="darkToggle">🌙</button>
+</nav>
+
+<header class="hero">
+    <h1 class="fade-in">Quantum Origami</h1>
+    <p class="fade-in delay-1">
+        A Unified Rigid-Fold Framework for Geometry, Curvature, Mass, Cosmology, Forces, and the Standard Model
+    </p>
+    <p class="author fade-in delay-2">Matthew Byrd — Minneapolis, Minnesota — July 11, 2026</p>
+</header>
+
+<section class="content fade-in delay-3">
+    <h2>Welcome</h2>
+    <p>
+        Quantum Origami models the universe as folded sheets of energy. Creases encode curvature, mass,
+        particles, forces, and cosmological evolution. Explore the full paper, diagrams, and simplified
+        explanations below.
+    </p>
+
+    <a class="button" href="paper.html">Read the Full Paper</a>
+    <a class="button" href="simple.html">Simple Explanation</a>
+    <a class="button" href="diagrams.html">View Diagrams</a>
+</section>
+
+<footer>
+    <p>© 2026 Matthew Byrd — Quantum Origami</p>
+</footer>
+
+</body>
+</html>
