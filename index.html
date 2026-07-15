@@ -1,31 +1,224 @@
-# Main Structure Equation (Quantum Origami)
-# This section defines the core geometric structure of the universe.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Quantum Origami — Interactive Paper</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-main_structure = {
-
-"equation":
-"    C = ⋃ᵢ Tᵢ(Fᵢ(Pᵢ))",
-
-"components_table": [
-    {"Symbol": "Pᵢ",        "Definition": "2-D energy sheet",                     "Role": "Base geometric object"},
-    {"Symbol": "Cᵢ",        "Definition": "Finite crease pattern",                "Role": "Defines fold geometry"},
-    {"Symbol": "Θᵢ",        "Definition": "Signed fold angles",                   "Role": "Controls curvature & mass"},
-    {"Symbol": "Fᵢ(Pᵢ)",    "Definition": "Folded 3-D module",                    "Role": "Rigidly folded shape"},
-    {"Symbol": "Tᵢ",        "Definition": "Rigid motion in SE(3)",                "Role": "Placement in space"},
-    {"Symbol": "C",         "Definition": "⋃ᵢ Tᵢ(Fᵢ(Pᵢ))",                       "Role": "Global configuration (universe)"}
-],
-
-"conceptual_graph":
-"
-Pᵢ  ──►  (creases Cᵢ, angles Θᵢ)  ──►  Fᵢ(Pᵢ)  ──►  Tᵢ(Fᵢ(Pᵢ))  ──►  C
-",
-
-"summary":
-"
-The main structure equation defines the entire universe as the union of all
-folded modules placed in space. Each sheet Pᵢ is folded by Fᵢ and positioned
-by Tᵢ, producing the global configuration C. All physical behavior emerges
-from this geometric assembly.
-"
-
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    transition: background 0.3s, color 0.3s;
 }
+:root {
+    --bg: #f7f7f7;
+    --text: #222;
+    --nav: #111;
+    --card: #fff;
+}
+.dark {
+    --bg: #111;
+    --text: #eee;
+    --nav: #000;
+    --card: #222;
+}
+nav {
+    background: var(--nav);
+    color: white;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+nav ul li a {
+    color: white;
+    text-decoration: none;
+}
+#darkToggle {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+}
+section {
+    padding: 40px 30px;
+    max-width: 900px;
+    margin: auto;
+}
+.card {
+    background: var(--card);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+.collapsible {
+    background: var(--nav);
+    color: white;
+    padding: 12px;
+    cursor: pointer;
+    border-radius: 6px;
+    margin-top: 10px;
+}
+.content {
+    display: none;
+    padding: 15px;
+    background: var(--card);
+    border-radius: 6px;
+    margin-bottom: 20px;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+table, th, td {
+    border: 1px solid var(--text);
+}
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+canvas {
+    width: 100%;
+    height: 300px;
+    background: #222;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+</style>
+
+</head>
+<body>
+
+<nav>
+    <div class="logo">Quantum Origami</div>
+    <ul>
+        <li><a href="#intro">Intro</a></li>
+        <li><a href="#tables">Tables</a></li>
+        <li><a href="#graphs">Graphs</a></li>
+        <li><a href="#cosmo">Cosmology</a></li>
+    </ul>
+    <button id="darkToggle">🌙</button>
+</nav>
+
+<section id="intro">
+    <h1>Quantum Origami: Interactive Physics Paper</h1>
+    <p>This interactive version of the Quantum Origami paper includes collapsible sections, dynamic graphs, and structured tables.</p>
+</section>
+
+<section id="tables">
+    <h2>Master Symbol Table</h2>
+    <div class="card">
+        <table>
+            <tr><th>Symbol</th><th>Meaning</th><th>Interpretation</th></tr>
+            <tr><td>P<sub>i</sub></td><td>Sheet in ℝ²</td><td>Flat energy sheet</td></tr>
+            <tr><td>C<sub>i</sub></td><td>Crease set</td><td>Fold pattern</td></tr>
+            <tr><td>Θ<sub>i,m</sub></td><td>Signed angle</td><td>Fold direction + magnitude</td></tr>
+            <tr><td>F<sub>i</sub></td><td>Folding map</td><td>Sheet → module</td></tr>
+            <tr><td>M<sub>i</sub></td><td>Folded module</td><td>3D object</td></tr>
+            <tr><td>T<sub>i</sub></td><td>Rigid motion</td><td>Placement in space</td></tr>
+            <tr><td>ρ<sub>crease</sub></td><td>Crease density</td><td>Curvature / mass field</td></tr>
+        </table>
+    </div>
+
+    <h2>Standard Model Motifs</h2>
+    <div class="card">
+        <table>
+            <tr><th>Particle</th><th>Motif</th><th>Angle Pattern</th><th>Role</th></tr>
+            <tr><td>Electron</td><td>1-fold</td><td>Θ &lt; 0</td><td>Negative charge</td></tr>
+            <tr><td>Positron</td><td>1-fold</td><td>-Θ</td><td>Antimatter</td></tr>
+            <tr><td>Neutrino</td><td>Flat</td><td>|Θ| &lt; 1</td><td>Weakly interacting</td></tr>
+            <tr><td>Photon</td><td>Oscillatory</td><td>A sin(ωt)</td><td>EM radiation</td></tr>
+        </table>
+    </div>
+</section>
+
+<section id="graphs">
+    <h2>Interactive Graphs</h2>
+
+    <h3>Inflation: Exponential Angle Decay</h3>
+    <canvas id="inflationGraph"></canvas>
+
+    <h3>Tunneling Probability</h3>
+    <canvas id="tunnelGraph"></canvas>
+
+    <h3>Entropy–Dimension Relation</h3>
+    <canvas id="entropyGraph"></canvas>
+</section>
+
+<section id="cosmo">
+    <h2>Cosmology Timeline</h2>
+
+    <button class="collapsible">Primordial Singularity</button>
+    <div class="content">
+        <p>Maximally crumpled sheets, |Θ| ≈ π, ρ<sub>crease</sub> → ∞.</p>
+    </div>
+
+    <button class="collapsible">Big Bang</button>
+    <div class="content">
+        <p>Collective unfolding begins; curvature decreases.</p>
+    </div>
+
+    <button class="collapsible">Inflation</button>
+    <div class="content">
+        <p>Exponential relaxation: Θ(t) = Θ₀ e<sup>-Ht</sup>.</p>
+    </div>
+
+    <button class="collapsible">Big Freeze</button>
+    <div class="content">
+        <p>Θ → 0, ρ<sub>crease</sub> → 0, universe becomes flat and cold.</p>
+    </div>
+</section>
+
+<script>
+// Dark Mode
+document.getElementById("darkToggle").onclick = () => {
+    document.body.classList.toggle("dark");
+};
+
+// Collapsible Sections
+document.querySelectorAll(".collapsible").forEach(btn => {
+    btn.addEventListener("click", () => {
+        btn.nextElementSibling.style.display =
+            btn.nextElementSibling.style.display === "block" ? "none" : "block";
+    });
+});
+
+// Graphs
+function drawGraph(canvasId, func, color="#00ff88") {
+    const c = document.getElementById(canvasId);
+    const ctx = c.getContext("2d");
+    ctx.clearRect(0,0,c.width,c.height);
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    for (let x=0; x<c.width; x++) {
+        const t = x / c.width * 6;
+        const y = func(t);
+        const py = c.height - (y * c.height);
+        ctx.lineTo(x, py);
+    }
+    ctx.stroke();
+}
+
+// Inflation graph: e^-t
+drawGraph("inflationGraph", t => Math.exp(-t));
+
+// Tunneling graph: e^-2t
+drawGraph("tunnelGraph", t => Math.exp(-2*t), "#ff4444");
+
+// Entropy graph: 1/t
+drawGraph("entropyGraph", t => 1/(t+0.5), "#4488ff");
+</script>
+
+</body>
+</html>
