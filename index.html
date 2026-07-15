@@ -1,224 +1,358 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Quantum Origami — Interactive Paper</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<style>
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    transition: background 0.3s, color 0.3s;
-}
-:root {
-    --bg: #f7f7f7;
-    --text: #222;
-    --nav: #111;
-    --card: #fff;
-}
-.dark {
-    --bg: #111;
-    --text: #eee;
-    --nav: #000;
-    --card: #222;
-}
-nav {
-    background: var(--nav);
-    color: white;
-    padding: 15px 30px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-nav ul {
-    list-style: none;
-    display: flex;
-    gap: 20px;
-}
-nav ul li a {
-    color: white;
-    text-decoration: none;
-}
-#darkToggle {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 20px;
-    cursor: pointer;
-}
-section {
-    padding: 40px 30px;
-    max-width: 900px;
-    margin: auto;
-}
-.card {
-    background: var(--card);
-    padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 20px;
-}
-.collapsible {
-    background: var(--nav);
-    color: white;
-    padding: 12px;
-    cursor: pointer;
-    border-radius: 6px;
-    margin-top: 10px;
-}
-.content {
-    display: none;
-    padding: 15px;
-    background: var(--card);
-    border-radius: 6px;
-    margin-bottom: 20px;
-}
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
-}
-table, th, td {
-    border: 1px solid var(--text);
-}
-th, td {
-    padding: 10px;
-    text-align: left;
-}
-canvas {
-    width: 100%;
-    height: 300px;
-    background: #222;
-    border-radius: 10px;
-    margin-top: 20px;
-}
-</style>
-
+  <meta charset="UTF-8" />
+  <title>Quantum Origami | Interactive Framework</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <header class="qo-header">
+    <div class="qo-logo">
+      <img src="assets/logo.svg" alt="Quantum Origami Logo" />
+      <h1>Quantum Origami</h1>
+    </div>
+    <nav class="qo-nav">
+      <button data-section="overview">Overview</button>
+      <button data-section="geometry">Geometry</button>
+      <button data-section="universality">Universality</button>
+      <button data-section="physics">Physics</button>
+      <button data-section="cosmology">Cosmology</button>
+      <button data-section="playground">Playground</button>
+    </nav>
+  </header>
 
-<nav>
-    <div class="logo">Quantum Origami</div>
-    <ul>
-        <li><a href="#intro">Intro</a></li>
-        <li><a href="#tables">Tables</a></li>
-        <li><a href="#graphs">Graphs</a></li>
-        <li><a href="#cosmo">Cosmology</a></li>
-    </ul>
-    <button id="darkToggle">🌙</button>
-</nav>
+  <main>
+    <!-- Overview -->
+    <section id="overview" class="qo-section active">
+      <h2>Master Symbol Table and Conceptual Overview</h2>
+      <p>
+        Quantum Origami is a rigid-fold geometric framework in which sheets, creases,
+        and signed fold angles encode curvature, mass, gravity, particles, forces,
+        cosmology, tunneling, and dimensional evolution.
+      </p>
 
-<section id="intro">
-    <h1>Quantum Origami: Interactive Physics Paper</h1>
-    <p>This interactive version of the Quantum Origami paper includes collapsible sections, dynamic graphs, and structured tables.</p>
-</section>
-
-<section id="tables">
-    <h2>Master Symbol Table</h2>
-    <div class="card">
-        <table>
-            <tr><th>Symbol</th><th>Meaning</th><th>Interpretation</th></tr>
-            <tr><td>P<sub>i</sub></td><td>Sheet in ℝ²</td><td>Flat energy sheet</td></tr>
-            <tr><td>C<sub>i</sub></td><td>Crease set</td><td>Fold pattern</td></tr>
-            <tr><td>Θ<sub>i,m</sub></td><td>Signed angle</td><td>Fold direction + magnitude</td></tr>
-            <tr><td>F<sub>i</sub></td><td>Folding map</td><td>Sheet → module</td></tr>
-            <tr><td>M<sub>i</sub></td><td>Folded module</td><td>3D object</td></tr>
-            <tr><td>T<sub>i</sub></td><td>Rigid motion</td><td>Placement in space</td></tr>
-            <tr><td>ρ<sub>crease</sub></td><td>Crease density</td><td>Curvature / mass field</td></tr>
+      <div class="qo-card">
+        <h3>Master Symbol Table</h3>
+        <p>Click a row to highlight its physical meaning.</p>
+        <table class="qo-table" id="symbol-table">
+          <thead>
+            <tr>
+              <th>Symbol</th>
+              <th>Mathematical Meaning</th>
+              <th>Physical / Intuitive Meaning</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Pi</td>
+              <td>Compact region in ℝ²</td>
+              <td>Flat sheet of paper (sheet i)</td>
+            </tr>
+            <tr>
+              <td>Ci</td>
+              <td>Finite set of crease lines on Pi</td>
+              <td>All folds drawn on sheet i</td>
+            </tr>
+            <tr>
+              <td>Θi,m</td>
+              <td>Signed fold angle</td>
+              <td>Direction + amount of the fold</td>
+            </tr>
+            <tr>
+              <td>Fi</td>
+              <td>Pi → ℝ³ folding map</td>
+              <td>How sheet i moves from flat to folded 3D</td>
+            </tr>
+            <tr>
+              <td>Ti</td>
+              <td>Rigid motion in ℝ³</td>
+              <td>Placement of module i in space</td>
+            </tr>
+            <tr>
+              <td>C(t)</td>
+              <td>⋃ Ti(t)(Fi(t)(Pi))</td>
+              <td>Universe configuration at time t</td>
+            </tr>
+            <tr>
+              <td>Pcrease(x)</td>
+              <td>Local crease density</td>
+              <td>Curvature / gravity field</td>
+            </tr>
+            <tr>
+              <td>S<sub>geom</sub></td>
+              <td>Σ |Θi,m|</td>
+              <td>Total geometric entropy</td>
+            </tr>
+          </tbody>
         </table>
-    </div>
+      </div>
+    </section>
 
-    <h2>Standard Model Motifs</h2>
-    <div class="card">
-        <table>
-            <tr><th>Particle</th><th>Motif</th><th>Angle Pattern</th><th>Role</th></tr>
-            <tr><td>Electron</td><td>1-fold</td><td>Θ &lt; 0</td><td>Negative charge</td></tr>
-            <tr><td>Positron</td><td>1-fold</td><td>-Θ</td><td>Antimatter</td></tr>
-            <tr><td>Neutrino</td><td>Flat</td><td>|Θ| &lt; 1</td><td>Weakly interacting</td></tr>
-            <tr><td>Photon</td><td>Oscillatory</td><td>A sin(ωt)</td><td>EM radiation</td></tr>
+    <!-- Geometry -->
+    <section id="geometry" class="qo-section">
+      <h2>Sheets, Creases, and Folding Maps</h2>
+
+      <div class="qo-grid">
+        <div class="qo-card">
+          <h3>Elementary Fold (Interactive)</h3>
+          <p>
+            Drag the angle slider to see how a single crease rotates one side of the sheet.
+          </p>
+          <div class="fold-visual">
+            <svg id="fold-svg" viewBox="0 0 200 200">
+              <!-- Flat sheet -->
+              <polygon id="sheet-left" points="20,40 100,40 100,160 20,160" class="sheet-left" />
+              <polygon id="sheet-right" points="100,40 180,40 180,160 100,160" class="sheet-right" />
+              <!-- Crease line -->
+              <line x1="100" y1="30" x2="100" y2="170" class="crease-line" />
+            </svg>
+            <label for="angle-slider">Fold angle Θ (degrees)</label>
+            <input type="range" id="angle-slider" min="-180" max="180" value="0" />
+            <div class="slider-value">
+              Θ = <span id="angle-value">0</span>°
+            </div>
+          </div>
+        </div>
+
+        <div class="qo-card">
+          <h3>Folding Map Fi</h3>
+          <p>
+            A folding map is a composition of elementary folds:
+          </p>
+          <pre><code>Fi = R(l<i>i,1</i>, Θ<i>i,1</i>) ∘ R(l<i>i,2</i>, Θ<i>i,2</i>) ∘ … ∘ R(l<i>i,Ki</i>, Θ<i>i,Ki</i>)</code></pre>
+          <p>
+            On each face of the crease subdivision, Fi is a rigid motion in ℝ³ (piecewise isometry).
+          </p>
+        </div>
+      </div>
+
+      <div class="qo-card">
+        <h3>Diagram: From Sheet to Module</h3>
+        <img src="assets/diagrams/folding-map.svg" alt="Folding map diagram" class="qo-diagram" />
+        <p>
+          Pi (sheet) → Fi(Pi) = Mi (folded module) → Ti(Mi) (placed module in the global configuration).
+        </p>
+      </div>
+    </section>
+
+    <!-- Universality -->
+    <section id="universality" class="qo-section">
+      <h2>Hausdorff Metric and Universality</h2>
+
+      <div class="qo-card">
+        <h3>Hausdorff Distance Explorer</h3>
+        <p>
+          Choose a target shape and see how many triangles (origami modules) are needed
+          to approximate it.
+        </p>
+        <div class="qo-controls">
+          <label>
+            Target surface:
+            <select id="surface-select">
+              <option value="sphere">Sphere</option>
+              <option value="torus">Torus</option>
+              <option value="cube">Cube</option>
+            </select>
+          </label>
+          <label>
+            Number of triangles M:
+            <input type="range" id="triangle-slider" min="4" max="512" value="32" />
+          </label>
+          <div class="slider-value">
+            M = <span id="triangle-value">32</span>
+          </div>
+        </div>
+        <div class="qo-metric">
+          Estimated d<sub>H</sub>(C, E) ≈ <span id="hausdorff-value">0.12</span>
+        </div>
+        <p class="qo-note">
+          As M increases, the origami configuration C = ⋃ T<sub>j</sub>(F<sub>j</sub>(P<sub>j</sub>))
+          approximates the target surface E arbitrarily well in the Hausdorff metric.
+        </p>
+      </div>
+
+      <div class="qo-card">
+        <h3>GR ↔ Quantum Origami Dictionary</h3>
+        <table class="qo-table">
+          <thead>
+            <tr>
+              <th>General Relativity</th>
+              <th>Quantum Origami</th>
+              <th>Interpretation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Ricci scalar R</td>
+              <td>Pcrease(x)</td>
+              <td>Curvature density</td>
+            </tr>
+            <tr>
+              <td>Stress-energy T<sub>μν</sub></td>
+              <td>E<sub>i,m</sub> = k<sub>m</sub>|Θ<sub>i,m</sub>|</td>
+              <td>Energy stored in folds</td>
+            </tr>
+            <tr>
+              <td>Mass-energy mc²</td>
+              <td>Σ k<sub>m</sub>|Θ<sub>i,m</sub>|</td>
+              <td>Mass from fold angles</td>
+            </tr>
+            <tr>
+              <td>Gravity ∼ ∇R</td>
+              <td>g(x) ∼ −∇Pcrease(x)</td>
+              <td>Attraction to folds</td>
+            </tr>
+          </tbody>
         </table>
-    </div>
-</section>
+      </div>
+    </section>
 
-<section id="graphs">
-    <h2>Interactive Graphs</h2>
+    <!-- Physics -->
+    <section id="physics" class="qo-section">
+      <h2>Particles, Forces, and Motifs</h2>
 
-    <h3>Inflation: Exponential Angle Decay</h3>
-    <canvas id="inflationGraph"></canvas>
+      <div class="qo-card">
+        <h3>Standard Model Motif Table (Interactive)</h3>
+        <p>Filter by charge and click a particle to see its motif description.</p>
 
-    <h3>Tunneling Probability</h3>
-    <canvas id="tunnelGraph"></canvas>
+        <div class="qo-controls">
+          <label>
+            Charge filter:
+            <select id="charge-filter">
+              <option value="all">All</option>
+              <option value="negative">Negative</option>
+              <option value="positive">Positive</option>
+              <option value="neutral">Neutral</option>
+            </select>
+          </label>
+        </div>
 
-    <h3>Entropy–Dimension Relation</h3>
-    <canvas id="entropyGraph"></canvas>
-</section>
+        <table class="qo-table" id="particle-table">
+          <thead>
+            <tr>
+              <th>Particle</th>
+              <th>Motif</th>
+              <th>Q<sub>i</sub></th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Filled by JS -->
+          </tbody>
+        </table>
 
-<section id="cosmo">
-    <h2>Cosmology Timeline</h2>
+        <div id="particle-detail" class="qo-detail hidden">
+          <h4 id="particle-name"></h4>
+          <p id="particle-description"></p>
+          <p><strong>Motif:</strong> <span id="particle-motif"></span></p>
+          <p><strong>Charge Q:</strong> <span id="particle-charge"></span></p>
+        </div>
+      </div>
 
-    <button class="collapsible">Primordial Singularity</button>
-    <div class="content">
-        <p>Maximally crumpled sheets, |Θ| ≈ π, ρ<sub>crease</sub> → ∞.</p>
-    </div>
+      <div class="qo-card">
+        <h3>Diagram: Forces from Fold Interactions</h3>
+        <img src="assets/diagrams/crease-density.svg" alt="Force diagram" class="qo-diagram" />
+        <ul>
+          <li><strong>Electromagnetism:</strong> interaction of net Q<sub>i</sub> motifs.</li>
+          <li><strong>Strong:</strong> crease locking between quark motifs.</li>
+          <li><strong>Weak:</strong> high-angle reconfiguration motifs (W±, Z⁰).</li>
+          <li><strong>Gravity:</strong> gradients of Pcrease(x).</li>
+        </ul>
+      </div>
+    </section>
 
-    <button class="collapsible">Big Bang</button>
-    <div class="content">
-        <p>Collective unfolding begins; curvature decreases.</p>
-    </div>
+    <!-- Cosmology -->
+    <section id="cosmology" class="qo-section">
+      <h2>Cosmology and Dimensional Flow</h2>
 
-    <button class="collapsible">Inflation</button>
-    <div class="content">
-        <p>Exponential relaxation: Θ(t) = Θ₀ e<sup>-Ht</sup>.</p>
-    </div>
+      <div class="qo-card">
+        <h3>Origami Cosmology Timeline</h3>
+        <img src="assets/diagrams/cosmology-flow.svg" alt="Cosmology flow diagram" class="qo-diagram" />
+        <div class="qo-timeline">
+          <button class="timeline-step" data-step="singularity">Singularity</button>
+          <button class="timeline-step" data-step="bigbang">Big Bang</button>
+          <button class="timeline-step" data-step="inflation">Inflation</button>
+          <button class="timeline-step" data-step="freeze">Big Freeze</button>
+        </div>
+        <div id="timeline-description" class="qo-timeline-description">
+          Select a stage to see its origami interpretation.
+        </div>
+      </div>
 
-    <button class="collapsible">Big Freeze</button>
-    <div class="content">
-        <p>Θ → 0, ρ<sub>crease</sub> → 0, universe becomes flat and cold.</p>
-    </div>
-</section>
+      <div class="qo-card">
+        <h3>Entropy–Dimension Relation</h3>
+        <p>
+          Geometric entropy:
+        </p>
+        <pre><code>S<sub>geom</sub>(t) = Σ |Θ<sub>i,m</sub>(t)|</code></pre>
+        <p>
+          Dimensional flow:
+        </p>
+        <pre><code>S<sub>geom</sub>(t) · R(t) = constant</code></pre>
+        <p>
+          Use the sliders to explore a toy model.
+        </p>
+        <div class="qo-controls">
+          <label>
+            Effective dimension R:
+            <input type="range" id="dimension-slider" min="1" max="11" value="11" />
+          </label>
+          <div class="slider-value">
+            R(t) = <span id="dimension-value">11</span>
+          </div>
+        </div>
+        <div class="qo-metric">
+          S<sub>geom</sub>(t) ≈ <span id="entropy-value">1.0</span> (normalized)
+        </div>
+      </div>
+    </section>
 
-<script>
-// Dark Mode
-document.getElementById("darkToggle").onclick = () => {
-    document.body.classList.toggle("dark");
-};
+    <!-- Playground -->
+    <section id="playground" class="qo-section">
+      <h2>Angle Field Playground</h2>
+      <p>
+        This is a toy interactive version of the master evolution equation for the angle field Θ<sub>i,m</sub>(t).
+      </p>
 
-// Collapsible Sections
-document.querySelectorAll(".collapsible").forEach(btn => {
-    btn.addEventListener("click", () => {
-        btn.nextElementSibling.style.display =
-            btn.nextElementSibling.style.display === "block" ? "none" : "block";
-    });
-});
+      <div class="qo-card">
+        <h3>Master Evolution (Toy Model)</h3>
+        <pre><code>dΘ<sub>i,m</sub>/dt = −H Θ<sub>i,m</sub> − ∂V<sub>int</sub>/∂Θ<sub>i,m</sub> + η<sub>i,m</sub>(t)</code></pre>
 
-// Graphs
-function drawGraph(canvasId, func, color="#00ff88") {
-    const c = document.getElementById(canvasId);
-    const ctx = c.getContext("2d");
-    ctx.clearRect(0,0,c.width,c.height);
-    ctx.strokeStyle = color;
-    ctx.lineWidth = 3;
-    ctx.beginPath();
-    for (let x=0; x<c.width; x++) {
-        const t = x / c.width * 6;
-        const y = func(t);
-        const py = c.height - (y * c.height);
-        ctx.lineTo(x, py);
-    }
-    ctx.stroke();
-}
+        <div class="qo-controls">
+          <label>
+            H (inflation rate):
+            <input type="range" id="H-slider" min="0" max="2" step="0.1" value="0.5" />
+          </label>
+          <label>
+            Interaction strength λ:
+            <input type="range" id="lambda-slider" min="0" max="2" step="0.1" value="1.0" />
+          </label>
+          <label>
+            Noise level σ:
+            <input type="range" id="noise-slider" min="0" max="1" step="0.05" value="0.2" />
+          </label>
+        </div>
 
-// Inflation graph: e^-t
-drawGraph("inflationGraph", t => Math.exp(-t));
+        <button id="simulate-btn">Simulate Θ(t)</button>
 
-// Tunneling graph: e^-2t
-drawGraph("tunnelGraph", t => Math.exp(-2*t), "#ff4444");
+        <canvas id="theta-canvas" width="600" height="200"></canvas>
+        <p class="qo-note">
+          The canvas shows a few representative angles Θ<sub>i,m</sub>(t) relaxing, interacting, and fluctuating.
+        </p>
+      </div>
+    </section>
+  </main>
 
-// Entropy graph: 1/t
-drawGraph("entropyGraph", t => 1/(t+0.5), "#4488ff");
-</script>
+  <footer class="qo-footer">
+    <p>
+      Quantum Origami &mdash; A rigid-fold geometric framework for curvature, mass, cosmology, forces, and universality.
+    </p>
+    <p>
+      Built as an interactive explainer for the paper by Matthew Byrd (2026).
+    </p>
+  </footer>
 
+  <script src="script.js"></script>
 </body>
 </html>
