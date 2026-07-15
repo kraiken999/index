@@ -2,262 +2,362 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Quantum Origami – Unified Framework</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet" />
-
-  <!-- DataTables CSS -->
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
-
-  <!-- Custom CSS -->
-  <link rel="stylesheet" href="css/style.css" />
+  <title>Quantum Origami Playground</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Colorful, fun styling -->
+  <style>
+    :root {
+      --bg1: #1b1f3b;
+      --bg2: #ff6f61;
+      --accent1: #ffd166;
+      --accent2: #06d6a0;
+      --accent3: #118ab2;
+      --text: #f7f7ff;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Poppins", system-ui, -apple-system, sans-serif;
+    }
+    body {
+      background: radial-gradient(circle at top left, var(--bg2), var(--bg1));
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(90deg, var(--accent3), var(--accent2));
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    header h1 {
+      font-size: 1.6rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    nav a {
+      margin-left: 1rem;
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 600;
+      padding: 0.4rem 0.8rem;
+      border-radius: 999px;
+      transition: background 0.2s, transform 0.2s;
+    }
+    nav a:hover {
+      background: rgba(0,0,0,0.15);
+      transform: translateY(-1px);
+    }
+    main {
+      flex: 1;
+      padding: 2rem;
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: 2rem;
+    }
+    section {
+      background: rgba(0,0,0,0.25);
+      border-radius: 1.2rem;
+      padding: 1.5rem;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+    section h2 {
+      margin-bottom: 0.8rem;
+      font-size: 1.4rem;
+    }
+    section p {
+      margin-bottom: 0.6rem;
+      line-height: 1.5;
+    }
+    .tag-row {
+      margin-top: 0.8rem;
+    }
+    .tag {
+      display: inline-block;
+      margin: 0.2rem;
+      padding: 0.3rem 0.7rem;
+      border-radius: 999px;
+      background: var(--accent1);
+      color: #222;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    /* 2D canvas area */
+    #canvas2d-wrapper {
+      margin-top: 1rem;
+      border-radius: 1rem;
+      overflow: hidden;
+      border: 2px solid var(--accent2);
+    }
+    #canvas2d {
+      width: 100%;
+      height: 260px;
+      display: block;
+      background: radial-gradient(circle at center, #ffffff, #ffd166);
+      cursor: pointer;
+    }
+    /* 3D area */
+    #three-container {
+      width: 100%;
+      height: 320px;
+      border-radius: 1rem;
+      overflow: hidden;
+      border: 2px solid var(--accent3);
+      margin-top: 1rem;
+    }
+    /* Links panel */
+    .links-list a {
+      display: block;
+      margin: 0.4rem 0;
+      padding: 0.5rem 0.8rem;
+      border-radius: 0.8rem;
+      background: rgba(255,255,255,0.1);
+      color: var(--accent1);
+      text-decoration: none;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .links-list a:hover {
+      background: rgba(255,255,255,0.25);
+      transform: translateX(3px);
+    }
+    footer {
+      padding: 1rem 2rem;
+      text-align: center;
+      font-size: 0.85rem;
+      background: rgba(0,0,0,0.4);
+    }
+    .btn-row {
+      margin-top: 1rem;
+    }
+    .btn {
+      display: inline-block;
+      margin-right: 0.5rem;
+      padding: 0.5rem 1rem;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      color: #222;
+      background: var(--accent1);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .btn.alt {
+      background: var(--accent2);
+    }
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.4);
+    }
+    @media (max-width: 900px) {
+      main {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+  <!-- Three.js CDN for simple 3D model -->
+  <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
 </head>
 <body>
-  <header class="site-header">
-    <div class="logo">Quantum Origami</div>
-    <nav class="nav">
-      <a href="#overview">Overview</a>
-      <a href="#papers">Papers & Tables</a>
-      <a href="#graphs">Graphs</a>
-      <a href="#interactive">Interactive Playground</a>
+  <header>
+    <h1>Quantum Origami Playground</h1>
+    <nav>
+      <a href="#intro">Intro</a>
+      <a href="#models">2D & 3D</a>
+      <a href="#links">Explore More</a>
     </nav>
   </header>
 
-  <section id="hero" class="hero">
-    <div class="hero-content">
-      <h1>Quantum Origami: Geometric Folding Meets Quantum Physics</h1>
-      <p>
-        A unified, concise synthesis of all papers—geometry, modular structures, and quantum frameworks—presented as an interactive, colorful site.
-      </p>
-      <button id="scrollToOverview" class="btn-primary">Explore the Framework</button>
-    </div>
-  </section>
-
   <main>
-    <!-- Overview section -->
-    <section id="overview" class="section">
-      <h2>Unified Overview</h2>
+    <!-- Left: text + 2D canvas -->
+    <section id="intro">
+      <h2>Welcome to the Fold</h2>
       <p>
-        This site aggregates the core ideas from all your papers into one coherent narrative:
-        geometric folding rules, modular origami structures, and their proposed connections
-        to quantum states, operators, and possibly quantum gravity.
+        This interactive site is your colorful sandbox for exploring
+        <strong>origami-inspired geometry</strong>, playful visualizations, and
+        quantum-flavored ideas. Click, drag, and experiment.
       </p>
       <p>
-        Use the tabs, tables, and graphs below to navigate the full structure—each element
-        is designed to be extendable with your detailed LaTeX‑level content.
+        Replace this text with your own sections—definitions, theorems, diagrams,
+        or anything from your PDF. Each panel can become a chapter in your
+        “Quantum Origami” story.
       </p>
-    </section>
-
-    <!-- Papers & tables section -->
-    <section id="papers" class="section">
-      <h2>Papers & Active Tables</h2>
-
-      <div class="tabs">
-        <button class="tab-button active" data-tab="paper1">Paper 1 – Geometric Folding</button>
-        <button class="tab-button" data-tab="paper2">Paper 2 – Modular Structures</button>
-        <button class="tab-button" data-tab="paper3">Paper 3 – Quantum Framework</button>
+      <div class="tag-row">
+        <span class="tag">Origami</span>
+        <span class="tag">Quantum</span>
+        <span class="tag">Geometry</span>
+        <span class="tag">Playground</span>
       </div>
 
-      <div id="paper1" class="tab-content active">
-        <h3>Paper 1 – Geometric Folding Rules</h3>
-        <p>
-          Summary placeholder: insert your concise abstract here, e.g. axioms for crease patterns,
-          mapping folds to transformations, etc.
-        </p>
-        <table id="tablePaper1" class="display">
-          <thead>
-            <tr>
-              <th>Fold ID</th>
-              <th>Type</th>
-              <th>Angle (deg)</th>
-              <th>Associated Operator</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>F1</td>
-              <td>Mountain</td>
-              <td>90</td>
-              <td>\(\hat{U}_1\)</td>
-            </tr>
-            <tr>
-              <td>F2</td>
-              <td>Valley</td>
-              <td>45</td>
-              <td>\(\hat{U}_2\)</td>
-            </tr>
-            <tr>
-              <td>F3</td>
-              <td>Twist</td>
-              <td>120</td>
-              <td>\(\hat{U}_3\)</td>
-            </tr>
-          </tbody>
-        </table>
+      <div id="canvas2d-wrapper">
+        <canvas id="canvas2d"></canvas>
       </div>
-
-      <div id="paper2" class="tab-content">
-        <h3>Paper 2 – Modular Origami Structures</h3>
-        <p>
-          Summary placeholder: insert your concise abstract here, e.g. graph‑like connectivity,
-          polyhedral modules, and combinatorial properties.
-        </p>
-        <table id="tablePaper2" class="display">
-          <thead>
-            <tr>
-              <th>Module</th>
-              <th>Vertices</th>
-              <th>Edges</th>
-              <th>Symmetry Group</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Tetrahedral</td>
-              <td>4</td>
-              <td>6</td>
-              <td>\(A_4\)</td>
-            </tr>
-            <tr>
-              <td>Cube</td>
-              <td>8</td>
-              <td>12</td>
-              <td>\(S_4\)</td>
-            </tr>
-            <tr>
-              <td>Icosahedron</td>
-              <td>12</td>
-              <td>30</td>
-              <td>\(A_5\)</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div id="paper3" class="tab-content">
-        <h3>Paper 3 – Quantum Origami Framework</h3>
-        <p>
-          Summary placeholder: insert your concise abstract here, e.g. Hilbert space of fold states,
-          operators as crease transformations, and possible links to quantum gravity.
-        </p>
-        <table id="tablePaper3" class="display">
-          <thead>
-            <tr>
-              <th>State Label</th>
-              <th>Configuration</th>
-              <th>Energy Level</th>
-              <th>Notes</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>\(|\psi_1\rangle\)</td>
-              <td>Single fold</td>
-              <td>1.0</td>
-              <td>Base state</td>
-            </tr>
-            <tr>
-              <td>\(|\psi_2\rangle\)</td>
-              <td>Double fold</td>
-              <td>2.3</td>
-              <td>Interference pattern</td>
-            </tr>
-            <tr>
-              <td>\(|\psi_3\rangle\)</td>
-              <td>Modular cluster</td>
-              <td>4.7</td>
-              <td>Collective mode</td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="btn-row">
+        <button class="btn" id="randomColorsBtn">Random Colors</button>
+        <button class="btn alt" id="spawnShapeBtn">Spawn Shape</button>
       </div>
     </section>
 
-    <!-- Graphs section -->
-    <section id="graphs" class="section">
-      <h2>Graphs from All Papers</h2>
+    <!-- Right: 3D + links -->
+    <section id="models">
+      <h2>2D & 3D Models</h2>
       <p>
-        These example plots show how you can visualize relationships between fold parameters,
-        modular complexity, and quantum‑like quantities. Replace the data with your real results.
+        On the left, the 2D canvas lets you spawn colorful folded shapes. On the
+        right, a simple 3D “origami cube” rotates in space. You can swap this out
+        for more sophisticated models later.
       </p>
 
-      <div class="charts-grid">
-        <div class="chart-card">
-          <h3>Fold Angle vs. Operator Norm (Paper 1)</h3>
-          <canvas id="chartPaper1"></canvas>
-        </div>
-        <div class="chart-card">
-          <h3>Module Complexity vs. Symmetry (Paper 2)</h3>
-          <canvas id="chartPaper2"></canvas>
-        </div>
-        <div class="chart-card">
-          <h3>Energy Spectrum of Fold States (Paper 3)</h3>
-          <canvas id="chartPaper3"></canvas>
-        </div>
-      </div>
-    </section>
+      <div id="three-container"></div>
 
-    <!-- Interactive playground -->
-    <section id="interactive" class="section">
-      <h2>Interactive Possibilities</h2>
+      <h2 id="links" style="margin-top:1.5rem;">Explore More</h2>
       <p>
-        Use the controls below to explore a toy “quantum origami” state space: choose fold types,
-        adjust angles, and see how a simple visualization responds. You can later connect this to
-        your formal mathematical model.
+        Use these links as a hub—point to your GitHub repo, papers, simulations,
+        or external tools.
       </p>
-
-      <div class="playground">
-        <div class="controls">
-          <label>
-            Fold type:
-            <select id="foldType">
-              <option value="mountain">Mountain</option>
-              <option value="valley">Valley</option>
-              <option value="twist">Twist</option>
-            </select>
-          </label>
-
-          <label>
-            Angle (deg):
-            <input type="range" id="foldAngle" min="0" max="180" value="90" />
-            <span id="foldAngleValue">90</span>
-          </label>
-
-          <label>
-            Modules:
-            <input type="number" id="moduleCount" min="1" max="20" value="4" />
-          </label>
-
-          <button id="simulateBtn" class="btn-secondary">Simulate State</button>
-        </div>
-
-        <div class="playground-output">
-          <h3>State Preview</h3>
-          <pre id="stateOutput"></pre>
-
-          <h3>Interactive Diagram</h3>
-          <canvas id="playgroundCanvas" width="400" height="300"></canvas>
-        </div>
+      <div class="links-list">
+        <a href="https://github.com/kraiken999/index" target="_blank">
+          GitHub: Quantum Origami Project
+        </a>
+        <a href="https://threejs.org/" target="_blank">
+          Three.js Docs (for advanced 3D)
+        </a>
+        <a href="https://en.wikipedia.org/wiki/Origami" target="_blank">
+          Origami Basics
+        </a>
+        <a href="https://arxiv.org/" target="_blank">
+          arXiv: Theoretical Physics Papers
+        </a>
       </div>
     </section>
   </main>
 
-  <footer class="site-footer">
-    <p>Quantum Origami – unified synthesis of all papers · MIT License · GitHub‑ready structure</p>
+  <footer>
+    Made with colorful chaos & structured folds. Customize me with your own content.
   </footer>
 
-  <!-- jQuery (for DataTables) -->
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <!-- DataTables JS -->
-  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-  <!-- Chart.js -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script>
+    // ---------- 2D CANVAS: simple interactive shapes ----------
+    const canvas = document.getElementById("canvas2d");
+    const ctx = canvas.getContext("2d");
 
-  <!-- Custom JS -->
-  <script src="js/tables.js"></script>
-  <script src="js/charts.js"></script>
-  <script src="js/main.js"></script>
+    function resizeCanvas() {
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width;
+      canvas.height = rect.height;
+      drawBackground();
+    }
+
+    function drawBackground() {
+      const grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+      grad.addColorStop(0, "#ffffff");
+      grad.addColorStop(1, "#ffd166");
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function randomColor() {
+      const colors = ["#ff6f61", "#06d6a0", "#118ab2", "#ffd166", "#f7f7ff"];
+      return colors[Math.floor(Math.random() * colors.length)];
+    }
+
+    function spawnShape(x, y) {
+      const size = 20 + Math.random() * 60;
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(Math.random() * Math.PI * 2);
+      ctx.fillStyle = randomColor();
+      ctx.beginPath();
+      // Simple folded diamond shape
+      ctx.moveTo(0, -size);
+      ctx.lineTo(size, 0);
+      ctx.lineTo(0, size);
+      ctx.lineTo(-size, 0);
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+    }
+
+    canvas.addEventListener("click", (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      spawnShape(x, y);
+    });
+
+    document.getElementById("randomColorsBtn").addEventListener("click", () => {
+      drawBackground();
+    });
+
+    document.getElementById("spawnShapeBtn").addEventListener("click", () => {
+      const x = canvas.width * (0.2 + 0.6 * Math.random());
+      const y = canvas.height * (0.2 + 0.6 * Math.random());
+      spawnShape(x, y);
+    });
+
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
+
+    // ---------- THREE.JS: simple rotating cube ----------
+    const container = document.getElementById("three-container");
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x0b1020);
+
+    const camera = new THREE.PerspectiveCamera(
+      45,
+      container.clientWidth / container.clientHeight,
+      0.1,
+      100
+    );
+    camera.position.set(2.5, 2.5, 3.5);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    container.appendChild(renderer.domElement);
+
+    const geometry = new THREE.BoxGeometry(1.5, 1.5, 1.5);
+    const materials = [
+      new THREE.MeshPhongMaterial({ color: 0xff6f61 }),
+      new THREE.MeshPhongMaterial({ color: 0x06d6a0 }),
+      new THREE.MeshPhongMaterial({ color: 0xffd166 }),
+      new THREE.MeshPhongMaterial({ color: 0x118ab2 }),
+      new THREE.MeshPhongMaterial({ color: 0xf7f7ff }),
+      new THREE.MeshPhongMaterial({ color: 0x1b1f3b }),
+    ];
+    const cube = new THREE.Mesh(geometry, materials);
+    scene.add(cube);
+
+    const light = new THREE.PointLight(0xffffff, 1.2);
+    light.position.set(5, 5, 5);
+    scene.add(light);
+
+    const ambient = new THREE.AmbientLight(0x404040);
+    scene.add(ambient);
+
+    function animate() {
+      requestAnimationFrame(animate);
+      cube.rotation.x += 0.01;
+      cube.rotation.y += 0.015;
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    window.addEventListener("resize", () => {
+      const w = container.clientWidth;
+      const h = container.clientHeight;
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+    });
+  </script>
 </body>
 </html>
